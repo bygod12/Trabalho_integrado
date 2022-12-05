@@ -27,7 +27,7 @@ Route::put('/ficha/update/{id}', [EventController::class, 'update'])->middleware
 Route::get('/treino/edit/{id}', [EventController::class, 'edit'])->middleware('auth');
 
 Route::get('/ficha/create', [fichaController::class, 'create']);
-Route::get('/ficha/{id}', [fichaController::class, 'treino_create']);
+Route::get('/ficha/{id}' ,[fichaController::class, 'treino_create']);//cria treinos ficha
 Route::post('/ficha', [fichaController::class, 'store']);
 Route::post('/treinos/inserir/{id}', [treinoController::class, 'store'])->middleware('auth');
 Route::post('/exercicio/{id}', [fichaController::class, 'store']);

@@ -56,7 +56,7 @@ class treinoController extends Controller
                 $exercicio->save();
             }
 
-            return redirect('/ficha/create{'.$ficha_id.'}')->with('msg', 'Evento criado com sucesso!');
+            return redirect('/ficha/{'.$ficha_id.'}')->with('msg', 'Evento criado com sucesso!');
         }
 
     }
@@ -95,7 +95,7 @@ class treinoController extends Controller
                 ->select('tipnome', 'tipdescricao')
                 ->get();
         }
-            return redirect('/ficha/{'.$fichaid.'}')->with('msg', 'Treino editado com sucesso!');
+            return redirect('/ficha/{'.$fichaid.'}',['treinos',$treino]);
 
     }
 }

@@ -34,11 +34,18 @@ class fichaController extends Controller
 
     }
 
-    public function treino_create() {
-        return view('ficha.create_treino');
+    public function treino_create($id) {
+        $treinos = DB::table('treino')
+        ->join('tipo_treino', 'treino.id', '=', 'tipo_treino.treino_id')
+        ->where('ficha_id',$id)
+        ->select('treagrupamento_muscular', 'treduracao_esperada','tipnome','tipdescricao')
+        ->get();
+        return view('ficha.create_treino',['treinos' =>$treinos]);
     }
 
     public function create() {
+
+
         return view('ficha.create');
     }
 

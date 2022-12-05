@@ -21,19 +21,7 @@
     </div>
 
     <div class="col-md-10 offset-md-1 dashboard-events-container">
-        @php
-        if (session('msg')) {
-            $treinoedit = $treino;
-            $exerciciosedit = $exercicio;
-            $tipo_treinoedit = $tipo_treino;
-        }else{
-            $treinos = [];
-            $treinoedit = [];
-            $exerciciosedit = [];
-            $tipo_treinoedit = [];
-        }
-        @endphp
-        @if (is_null($treinos))
+
             <table class="table">
                 <thead>
                     <tr>
@@ -45,11 +33,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($treinos as $key=>$treino)
+                    @foreach($treinos as $treino)
                         <tr>
                             <td scropt="row">{{ $loop->index + 1 }}</td>
-                            <td>{{ $treinos->descricao }}</td>
                             <td>{{ $treino->treagrupamento_muscular }}</td>
+                            <td>{{ $treino->tipdescricao }}</td>
+                            <td>{{ $treino->tipnome }}</td>
+                            <td>{{ $treino->treduracao_esperada }}</td>
+
 
                             <td>
                                 <form action="/treino/edit/{{ $treino->id }}" method="GET">
@@ -69,9 +60,7 @@
                     @endforeach
                 </tbody>
             </table>
-        @else
-            <p></p>
-        @endif
+
 
     </div>
 
@@ -81,6 +70,7 @@
     <div class="col-md-10 offset-md-1 dashboard-events-container">
     </div>
     </div>
+    {{--
     @if (is_null($treinoedit) &&
         is_null($exerciciosedit) &&
         is_null($tipo_treinoedit))
@@ -168,8 +158,7 @@
             <button type="submit" class="btn btn-success" id="inserir">Terminar Ficha!</button>
 
       </form>
-
-      @else
+      --}}
       <form action="/treinos/inserir/{{request()->route()->parameters['id']}}" method="POST" enctype="multipart/form-data">
         <script>console.log(dd(request()->route()->parameters['id']));</script>
         @csrf
@@ -248,7 +237,6 @@
 
       </form>
 
-    @endif
 
 
 
