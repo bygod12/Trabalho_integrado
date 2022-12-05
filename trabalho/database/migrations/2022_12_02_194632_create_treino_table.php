@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('ficha_id');
             $table->timestamps();
+            $table->string("tipnome");
+            $table->text("tipdescricao");
             $table->text("treagrupamento_muscular");
             $table->integer('treduracao_esperada');
             $table->foreign('ficha_id')

@@ -4,59 +4,81 @@
 
 @section('content')
 
-<div id="event-create-container" class="col-md-6 offset-md-3">
-  <h1>Editando: {{ $event->title }}</h1>
-  <form action="/events/update/{{ $event->id }}" method="POST" enctype="multipart/form-data">
+<form action="/treinos/update/{{$id}}/{{$treino_id}}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
-    <div class="form-group">
-      <label for="image">Imagem do Evento:</label>
-      <input type="file" id="image" name="image" class="from-control-file">
-      <img src="/img/events/{{ $event->image }}" alt="{{ $event->title }}" class="img-preview">
-    </div>
-    <div class="form-group">
-      <label for="title">Evento:</label>
-      <input type="text" class="form-control" id="title" name="title" placeholder="Nome do evento" value="{{ $event->title }}">
-    </div>
-    <div class="form-group">
-      <label for="date">Data do evento:</label>
-      <input type="date" class="form-control" id="date" name="date" value="{{ $event->date->format('Y-m-d') }}">
-    </div>
-    <div class="form-group">
-      <label for="title">Cidade:</label>
-      <input type="text" class="form-control" id="city" name="city" placeholder="Local do evento" value="{{ $event->city }}">
-    </div>
-    <div class="form-group">
-      <label for="title">O evento é privado?</label>
-      <select name="private" id="private" class="form-control">
-        <option value="0">Não</option>
-        <option value="1" {{ $event->private == 1 ? "selected='selected'" : "" }}>Sim</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="title">Descrição:</label>
-      <textarea name="description" id="description" class="form-control" placeholder="O que vai acontecer no evento?">{{ $event->description }}</textarea>
-    </div>
-    <div class="form-group">
-      <label for="title">Adicione itens de infraestrutura:</label>
-      <div class="form-group">
-        <input type="checkbox" name="items[]" value="Cadeiras"> Cadeiras
-      </div>
-      <div class="form-group">
-        <input type="checkbox" name="items[]" value="Palco"> Palco
-      </div>
-      <div class="form-group">
-        <input type="checkbox" name="items[]" value="Cerveja grátis"> Cerveja grátis
-      </div>
-      <div class="form-group">
-        <input type="checkbox" name="items[]" value="Open Food"> Open food
-      </div>
-      <div class="form-group">
-        <input type="checkbox" name="items[]" value="Brindes"> Brindes
-      </div>
-    </div>
-    <input type="submit" class="btn btn-primary" value="Editar Evento">
+
+            <!-- The Modal -->
+            <!-- Modal content -->
+                <h2>Editar treino</h2>
+
+
+                <table class="table">
+                        <thead>
+                            <tr>
+
+                                <th scope="col"><button class="btn btn-success" type="button" id="adcionar" class="">Exercicio +</button></th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Numero Series</th>
+                                <th scope="col">Numero Repetição</th>
+                                <td><span class="close">&times;</span></td>
+
+                            </tr>
+                        </thead>
+                        <tbody id="exercicios" >
+
+
+                            <tbody id="exercicios" >
+                                @foreach ($exerciciosedit as $exercicio)
+                                <tr id='x" + verificador + "'>
+                                    <th scope='col'><button type='button' id='x" + verificador + "' class='botao btn-success'>X</button></th>
+                                    <td><input type='text' class='form-control' name='exenome[]' value="{{$exercicio->exenome}}"></td>
+                                    <td><input type='number' class='form-control' name='exenum_serie[]' value="{{$exercicio->exenum_serie}}"></td>
+                                    <td><input type='number' class='form-control' name='exenum_repeticao[]' value="{{$exercicio->exenum_repeticao}}"></td>
+                                    </tr>
+                                @endforeach
+
+
+                            </tbody>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Agrupamento muscular:</th>
+                                        <th scope="col">Descrição, opcional:</th>
+                                        <th scope="col">Tipo do treino:</th>
+                                        <th scope="col">Duração esperada do treino:</th>
+
+
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">
+                                            <input type="text" class="form-control" id="agrupamento" name="treagrupamento_muscular" value="{{$treino->treagrupamento_muscular}}">
+                                        </th>
+                                        <th scope="col">
+                                            <input type="text" class="form-control" id="descrição" name="tipdescricao" value="{{$tipo_treino->tipdescricao}}">
+
+                                        </th>
+                                        <th scope="col">
+                                            <input type="text" class="form-control" id="tiponome" name="tiponome" value="{{$tipo_treino->tipnome}}">
+
+                                        </th>
+                                        <th scope="col">
+                                            <input type="number" class="form-control" id="treduracao_esperada" name="treduracao_esperada" value="{{$treino->treduracao_esperada}}">
+
+                                        </th>
+
+
+                                    </tr>
+                                </thead>
+
+
+
+                </table>
+
+                <button type="submit" class="btn btn-success" id="inserir">inserir</button>
+
+
+        <button type="submit" class="btn btn-success" id="inserir">Terminar Ficha!</button>
+
   </form>
-</div>
 
 @endsection

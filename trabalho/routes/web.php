@@ -21,17 +21,18 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 Route::get('/', [EventController::class, 'index']);
-Route::delete('/treino/{id}', [EventController::class, 'destroy'])->middleware('auth');
-Route::get('/ficha/edit/{id}', [EventController::class, 'edit'])->middleware('auth');
-Route::put('/ficha/update/{id}', [EventController::class, 'update'])->middleware('auth');
-Route::get('/treino/edit/{id}', [EventController::class, 'edit'])->middleware('auth');
+Route::delete('/treino/delete/{id}/{treino_id}', [treinoController::class, 'destroy'])->middleware('auth');
+Route::get('/treino/edit/{id}/{treino_id}', [treinoController::class, 'edit'])->middleware('auth');
+Route::delete('/ficha/delete/{id}', [fichaController::class, 'destroy'])->middleware('auth');
+
+Route::put('/treino/update/{id}/{treino_id}', [treinoController::class, 'update'])->middleware('auth');
+Route::get('/dashboard', [fichaController::class, 'dashboard'])->middleware('auth');
+
 
 Route::get('/ficha/create', [fichaController::class, 'create']);
-Route::get('/ficha/{id}' ,[fichaController::class, 'treino_create']);//cria treinos ficha
+Route::get('/ficha/{id}' ,[fichaController::class, 'treino_create'])->middleware('auth');;//cria treinos ficha
 Route::post('/ficha', [fichaController::class, 'store']);
 Route::post('/treinos/inserir/{id}', [treinoController::class, 'store'])->middleware('auth');
-Route::post('/exercicio/{id}', [fichaController::class, 'store']);
-Route::get('/tipo_treino/{id}', [tipo_treinoController::class, 'store']);
 
 
 
@@ -40,7 +41,6 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/dashboard', [EventController::class, 'dashboard'])->middleware('auth');
 
 Route::post('/ficha/join/{id}', [EventController::class, 'joinEvent'])->middleware('auth');
 

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\ficha;
 use App\Models\tipo_treino;
 use Illuminate\Http\Request;
 use App\Models\exercicio;
 use App\Models\treino;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use SebastianBergmann\Environment\Console;
 
@@ -17,25 +19,15 @@ class treinoController extends Controller
         $treino = new treino;
         $treino->treagrupamento_muscular = $request->treagrupamento_muscular;
         $treino->treduracao_esperada = $request->treduracao_esperada;
-
+        $treino->tipnome = $request->tiponome;
+        $treino->tipdescricao = $request->tipdescricao;
 
         $ficha_id = substr($id, 1, 1);
-        error_log($ficha_id);
 
         $treino->ficha_id = $ficha_id;
 
 
         $treino->save();
-
-
-            $tipo_treino = new tipo_treino;
-
-            $tipo_treino->tipnome = $request->tiponome;
-            $tipo_treino->tipdescricao = $request->tipdescricao;
-            $treino_id = substr($id, 1, 1);
-            error_log($treino_id);
-            $tipo_treino->treino_id = $treino_id;
-            $tipo_treino->save();
 
 
 
@@ -56,46 +48,47 @@ class treinoController extends Controller
                 $exercicio->save();
             }
 
-            return redirect('/ficha/{'.$ficha_id.'}')->with('msg', 'Evento criado com sucesso!');
+            return redirect('/ficha/{'.$ficha_id.'}');
         }
 
     }
 
-    public function destroy($id) {
+    public function destroy($id,$treino_id) {
 
-        treino::findOrFail($id)->delete();
+        treino::findOrFail($treino_id)->delete();
 
-        return redirect('/dashboard')->with('msg', 'Evento excluído com sucesso!');
+        $ficha_id = substr($id, 1, 1);
+        $str = 'ficha_id';
+        $treinos = DB::table('treino')->where($str ,$ficha_id)->get();
+
+
+
+        return view('ficha.create_treino',['treinos' =>$treinos, 'id'=>$id]);
 
     }
-    public function edit($id) {
+    public function edit($id,$treino_id) {
 
 
         $treinoedit = treino::findOrFail($id);
+        $str = 'treino_id';
+        $exerciciosedit = DB::table('exercicio')->where($str ,$treinoedit->id)->get();
 
 
-        return ['treinoedit' => $treinoedit];
+
+        return view('ficha.edit', ['treinoedit' => $treinoedit,'id' => $id, 'treino_id' =>$treino_id,'exerciciosedit' =>$exerciciosedit]);
 
     }
-    public function update(Request $request, $fichaid)
+    public function update(Request $request,$id, $treino_id)
     {
-
         $data = $request->all();
+        treino::findOrFail($request->id)->update($data);
 
-            treino::findOrFail($request->id)->update($data);
+        $ficha_id = substr($id, 1, 1);
+        $str = 'ficha_id';
+        $treinos = DB::table('treino')->where($str ,$ficha_id)->get();
 
-            $treinos = DB::table('treino')
-            ->join('ficha', 'ficha.id', '=', $fichaid)
-            ->select('treagrupamento_muscular', 'treduracao_esperada')
-            ->get();
-        $tipo_treino = [];
-        foreach ($treinos as $key=>$treino) {
-            $tipo_treino += DB::table('tipo_treino')
-                ->join('treino', 'treino.id', '=', $treino->id[$key])
-                ->select('tipnome', 'tipdescricao')
-                ->get();
-        }
-            return redirect('/ficha/{'.$fichaid.'}',['treinos',$treino]);
+        return view('ficha.create_treino',['treinos' =>$treinos, 'id'=>$id]);
+
 
     }
 }
